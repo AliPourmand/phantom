@@ -318,8 +318,12 @@ subroutine equationofstate(eos_type,ponrhoi,spsoundi,rhoi,xi,yi,zi,tempi,eni,gam
 !  and ionisation/dissociation. MESA is a stellar evolution code, so
 !  this equation of state is designed for matter inside stars
 !
+
     cgsrhoi = rhoi * unit_density
     cgseni  = eni * unit_ergg
+   !  write(*,*) 'l 325 (eos_MESA), equationofstate: cgs: cgsrhoi = ',cgsrhoi,&
+   !  ' cgseni erg/g = ',cgseni
+
     call get_eos_pressure_temp_gamma1_mesa(cgsrhoi,cgseni,cgspresi,temperaturei,gam1,ierr)
     presi = cgspresi / unit_pressure
 
@@ -329,7 +333,8 @@ subroutine equationofstate(eos_type,ponrhoi,spsoundi,rhoi,xi,yi,zi,tempi,eni,gam
     if (present(gamma_local)) gamma_local = gam1 ! gamma is an output
     if (present(mu_local)) mu_local = 1./get_eos_1overmu_mesa(cgsrhoi,cgseni)
     if (ierr /= 0) call warning('eos_mesa','extrapolating off tables')
-
+   !  write(*,*) 'l 340 (eos_MESA), equationofstate: cgs: presi = ',cgspresi,'  ponrhoi = ',ponrhoi,&
+   !  ' spsoundi = ',spsoundi, 'tempi = ',tempi
  case(11)
 !
 !--Equation of state with pressure and temperature equal to zero
